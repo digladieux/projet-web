@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{cdb4d06e-239a-4afd-8600-eb37b0744b7f}</Project>
+      <Name>DataAccessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EntitiesLayer\EntitiesLayer.csproj">
       <Project>{493067b2-62ec-46a5-900c-cab91164c5ac}</Project>
       <Name>EntitiesLayer</Name>

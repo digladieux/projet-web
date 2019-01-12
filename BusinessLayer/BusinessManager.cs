@@ -11,11 +11,12 @@ namespace BusinessLayer
     public class BusinessManager
     {
         protected List<Fight> _fights;
-        protected DalManager dalManager;
+        //  protected DalManager dalManager;
+          protected DataAccessLayer.DalManagerBdd dalManager;
 
         public BusinessManager()
         {
-            dalManager = new DalManager();
+            dalManager = new DataAccessLayer.DalManagerBdd();
             _fights = new List<Fight>();
 
             List<House> houses = dalManager.getAllHouses();
@@ -29,19 +30,24 @@ namespace BusinessLayer
             return _fights;
         }
 
+        public List<Character> getAllCharacters()
+        {
+            return dalManager.getAllCharacters();
+        }
+
         public List<House> getAllHouses()
         {
             return dalManager.getAllHouses();
         }
-
+        /*
         public List<House> getAllBigHouses()
         {
             return dalManager.getAllBigHouses();
         }
-
+        */
         public List<Character> getStrongNMidLifeCharacters()
         {
-            return (from character in dalManager.getAllCharacters() where character.Strength > 3 && character.Pv > 50 select character).ToList();
+            return (from character in dalManager.getAllCharacters() where character.Strength > 3 && character.Pv > 500 select character).ToList();
         }
 
         public List<Territory> getAllTerritories()

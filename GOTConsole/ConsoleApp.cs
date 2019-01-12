@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,24 +16,29 @@ namespace GOTConsole
             BusinessManager manager = new BusinessManager();
 
             Console.WriteLine("Welcome to GOTConsole!");
+            Console.WriteLine("0 - Show all characters");
             Console.WriteLine("1 - Show all houses");
             Console.WriteLine("2 - Show all big houses");
             Console.WriteLine("3 - Show all fights");
-            Console.WriteLine("4 - Show characters with more than 3 of strength and more than 50 life points");
+            Console.WriteLine("4 - Show characters with more than 3 of strength and more than 500 life points");
             Console.WriteLine("5 - Show all territories");
 
             string choix = Console.ReadLine();
 
             switch(choix)
             {
+                case "0":
+                    foreach (var e in manager.getAllCharacters())
+                        Console.WriteLine(e.ToString());
+                    break;
                 case "1":
                     foreach (var e in manager.getAllHouses())
                         Console.WriteLine(e.ToString());
                     break;
-                case "2":
+                /*case "2":
                     foreach (var e in manager.getAllBigHouses())
                         Console.WriteLine(e.ToString());
-                    break;
+                    break;*/
                 case "3":
                     foreach (var e in manager.getAllFights())
                         Console.WriteLine(e.ToString());
@@ -46,7 +52,8 @@ namespace GOTConsole
                         Console.WriteLine(e.ToString());
                     break;
             }
-            Console.ReadKey(true);
+
+        Console.ReadKey(true);
         }
     }
 }

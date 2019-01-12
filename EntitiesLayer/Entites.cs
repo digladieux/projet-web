@@ -81,6 +81,13 @@ namespace EntitiesLayer
             _houser = new List<Character>();
         }
 
+        public House(string name, int numberOfUnits)
+        {
+            _name = name;
+            _numberOfUnits = numberOfUnits;
+            _houser = new List<Character>();
+        }
+
         public void AddHouser(Character perso)
         {
             _houser.Add(perso);

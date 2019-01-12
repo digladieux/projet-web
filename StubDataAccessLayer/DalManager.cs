@@ -7,20 +7,20 @@ using EntitiesLayer;
 
 namespace StubDataAccessLayer
 {
-    public class DalManager
+    public class DalManagerBdd
     {
         private List<Character> _characters;
         private List<House> _houses;
         private List<Territory> _territories;
         
-        public DalManager()
+        public DalManagerBdd()
         {
             _characters = new List<Character>();
             _houses = new List<House>();
             _territories = new List<Territory>();
 
             Character john = new Character("John", "Snow", 100, 100, 30, 100);
-            Character aria = new Character("Arai", "Stark", 100, 70, 50, 30);
+            Character aria = new Character("Aria", "Stark", 100, 70, 50, 30);
             aria.AddRelatives(john, RelationshipEnum.FRIENDSHIP);
             john.AddRelatives(aria, RelationshipEnum.FRIENDSHIP);
             Character geofrey = new Character("Geofrey", "Baratheon", 100, 0, 99, 5);
