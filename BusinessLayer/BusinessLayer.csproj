@@ -52,10 +52,6 @@
       <Project>{493067b2-62ec-46a5-900c-cab91164c5ac}</Project>
       <Name>EntitiesLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StubDataAccessLayer\StubDataAccessLayer.csproj">
-      <Project>{21115126-8a83-4226-bf57-97aae0f5c0d7}</Project>
-      <Name>StubDataAccessLayer</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

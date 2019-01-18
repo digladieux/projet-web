@@ -1,60 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EntitiesLayer;
-using StubDataAccessLayer;
 
 namespace BusinessLayer
 {
     public class BusinessManager
     {
-        protected List<Fight> _fights;
-        //  protected DalManager dalManager;
-          protected DataAccessLayer.DalManagerBdd dalManager;
-
-        public BusinessManager()
+        public List<Character> GetAllCharacterFort()
         {
-            dalManager = new DataAccessLayer.DalManagerBdd();
-            _fights = new List<Fight>();
-
-            List<House> houses = dalManager.getAllHouses();
-
-            Fight bataille1 = new Fight(houses[0], houses[1], houses[0]);
-            _fights.Add(bataille1);
+            DataAccessLayer.DALManager manager = DataAccessLayer.DALManager.Instance;
+            List<Character> list = manager._DALServer.GetCharacters();
+            return list.Where(c => c._pv > 50 && c._bravoury > 3).ToList();
         }
 
-        public List<Fight> getAllFights()
+        public IEnumerable<War> GetAllWars()
         {
-            return _fights;
+            DataAccessLayer.DALManager manager = DataAccessLayer.DALManager.Instance;
+            List<War> list = manager._DALServer.GetWars();
+
+            return list;
         }
 
-        public List<Character> getAllCharacters()
+        public IEnumerable<Fight> GetAllFights()
         {
-            return dalManager.getAllCharacters();
+            DataAccessLayer.DALManager manager = DataAccessLayer.DALManager.Instance;
+            List<Fight> list = manager._DALServer.GetFights();
+
+            return list;
         }
 
-        public List<House> getAllHouses()
+
+        public IEnumerable<object> GetAllCharacters()
         {
-            return dalManager.getAllHouses();
-        }
-        /*
-        public List<House> getAllBigHouses()
-        {
-            return dalManager.getAllBigHouses();
-        }
-        */
-        public List<Character> getStrongNMidLifeCharacters()
-        {
-            return (from character in dalManager.getAllCharacters() where character.Strength > 3 && character.Pv > 500 select character).ToList();
+            DataAccessLayer.DALManager manager = DataAccessLayer.DALManager.Instance;
+            List<Character> list = manager._DALServer.GetCharacters();
+            return list;
         }
 
-        public List<Territory> getAllTerritories()
+        public List<House> GetAllHouses()
         {
-            return dalManager.getAllTerritories();
+            DataAccessLayer.DALManager manager = DataAccessLayer.DALManager.Instance;
+            return manager._DALServer.GetHouses();
         }
 
-        public List<Fight> Fights { get => _fights; set => _fights = value; }
+
+        public List<EntitiesLayer.House> GetAllHousesWith200Units()
+        {
+            DataAccessLayer.DALManager manager = DataAccessLayer.DALManager.Instance;
+            List<House> list = manager._DALServer.GetHouses();
+            return list.Where(c => c._numberOfUnities > 200).ToList();
+        }
+
+
+        public List<Territory> GetAllTerritories()
+        {
+            DataAccessLayer.DALManager manager = DataAccessLayer.DALManager.Instance;
+            return manager._DALServer.GetTerritories();
+        }
     }
 }

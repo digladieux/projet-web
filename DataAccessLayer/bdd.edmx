@@ -1,0 +1,373 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BddGameOfThronesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Characters">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="firstname" Type="varchar" MaxLength="50" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" />
+          <Property Name="pv" Type="int" />
+          <Property Name="bravoury" Type="int" />
+          <Property Name="crazyness" Type="int" />
+          <Property Name="strength" Type="int" />
+          <Property Name="houseFK" Type="int" />
+        </EntityType>
+        <EntityType Name="CharactersToHouse">
+          <Key>
+            <PropertyRef Name="house_id" />
+            <PropertyRef Name="character" />
+          </Key>
+          <Property Name="house_id" Type="int" Nullable="false" />
+          <Property Name="character" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Houses">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="number_of_units" Type="int" />
+        </EntityType>
+        <EntityType Name="Relationships">
+          <Key>
+            <PropertyRef Name="first_character_id" />
+            <PropertyRef Name="second_character_id" />
+          </Key>
+          <Property Name="first_character_id" Type="int" Nullable="false" />
+          <Property Name="second_character_id" Type="int" Nullable="false" />
+          <Property Name="relation_type" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Erreurs détectées durant la génération :
+avertissement 6002: La table/vue 'BddGameOfThrones.sys.database_firewall_rules' n'a pas de clé primaire définie. La clé a été déduite et la définition a été créée en tant que table/vue en lecture seule.-->
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="create_date" Type="datetime" Nullable="false" />
+          <Property Name="modify_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Character__house__6383C8BA">
+          <End Role="Houses" Type="Self.Houses" Multiplicity="1" />
+          <End Role="CharactersToHouse" Type="Self.CharactersToHouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Houses">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CharactersToHouse">
+              <PropertyRef Name="house_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Character__house__68487DD7">
+          <End Role="Houses" Type="Self.Houses" Multiplicity="0..1" />
+          <End Role="Characters" Type="Self.Characters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Houses">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Characters">
+              <PropertyRef Name="houseFK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Relations__first__66603565">
+          <End Role="Characters" Type="Self.Characters" Multiplicity="1" />
+          <End Role="Relationships" Type="Self.Relationships" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Relationships">
+              <PropertyRef Name="first_character_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Relations__secon__6754599E">
+          <End Role="Characters" Type="Self.Characters" Multiplicity="1" />
+          <End Role="Relationships" Type="Self.Relationships" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Relationships">
+              <PropertyRef Name="second_character_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BddGameOfThronesModelStoreContainer">
+          <EntitySet Name="Characters" EntityType="Self.Characters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharactersToHouse" EntityType="Self.CharactersToHouse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Houses" EntityType="Self.Houses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Relationships" EntityType="Self.Relationships" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
+            <DefiningQuery>SELECT 
+    [database_firewall_rules].[id] AS [id], 
+    [database_firewall_rules].[name] AS [name], 
+    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
+    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
+    [database_firewall_rules].[create_date] AS [create_date], 
+    [database_firewall_rules].[modify_date] AS [modify_date]
+    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Character__house__6383C8BA" Association="Self.FK__Character__house__6383C8BA">
+            <End Role="Houses" EntitySet="Houses" />
+            <End Role="CharactersToHouse" EntitySet="CharactersToHouse" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Character__house__68487DD7" Association="Self.FK__Character__house__68487DD7">
+            <End Role="Houses" EntitySet="Houses" />
+            <End Role="Characters" EntitySet="Characters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Relations__first__66603565" Association="Self.FK__Relations__first__66603565">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Relationships" EntitySet="Relationships" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Relations__secon__6754599E" Association="Self.FK__Relations__secon__6754599E">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Relationships" EntitySet="Relationships" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BddGameOfThronesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Characters">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pv" Type="Int32" />
+          <Property Name="bravoury" Type="Int32" />
+          <Property Name="crazyness" Type="Int32" />
+          <Property Name="strength" Type="Int32" />
+          <NavigationProperty Name="Relationships" Relationship="Self.FK__Relations__first__66603565" FromRole="Characters" ToRole="Relationships" />
+          <NavigationProperty Name="Relationships1" Relationship="Self.FK__Relations__secon__6754599E" FromRole="Characters" ToRole="Relationships" />
+          <Property Name="houseFK" Type="Int32" />
+          <NavigationProperty Name="Houses" Relationship="BddGameOfThronesModel.FK__Character__house__68487DD7" FromRole="Characters" ToRole="Houses" />
+        </EntityType>
+        <EntityType Name="CharactersToHouse">
+          <Key>
+            <PropertyRef Name="house_id" />
+            <PropertyRef Name="character" />
+          </Key>
+          <Property Name="house_id" Type="Int32" Nullable="false" />
+          <Property Name="character" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Houses" Relationship="Self.FK__Character__house__6383C8BA" FromRole="CharactersToHouse" ToRole="Houses" />
+        </EntityType>
+        <EntityType Name="Houses">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="number_of_units" Type="Int32" />
+          <NavigationProperty Name="CharactersToHouse" Relationship="Self.FK__Character__house__6383C8BA" FromRole="Houses" ToRole="CharactersToHouse" />
+          <NavigationProperty Name="Characters" Relationship="BddGameOfThronesModel.FK__Character__house__68487DD7" FromRole="Houses" ToRole="Characters" />
+        </EntityType>
+        <EntityType Name="Relationships">
+          <Key>
+            <PropertyRef Name="first_character_id" />
+            <PropertyRef Name="second_character_id" />
+          </Key>
+          <Property Name="first_character_id" Type="Int32" Nullable="false" />
+          <Property Name="second_character_id" Type="Int32" Nullable="false" />
+          <Property Name="relation_type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Characters" Relationship="Self.FK__Relations__first__66603565" FromRole="Relationships" ToRole="Characters" />
+          <NavigationProperty Name="Characters1" Relationship="Self.FK__Relations__secon__6754599E" FromRole="Relationships" ToRole="Characters" />
+        </EntityType>
+        <Association Name="FK__Relations__first__66603565">
+          <End Role="Characters" Type="Self.Characters" Multiplicity="1" />
+          <End Role="Relationships" Type="Self.Relationships" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Relationships">
+              <PropertyRef Name="first_character_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Relations__secon__6754599E">
+          <End Role="Characters" Type="Self.Characters" Multiplicity="1" />
+          <End Role="Relationships" Type="Self.Relationships" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Relationships">
+              <PropertyRef Name="second_character_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Character__house__6383C8BA">
+          <End Role="Houses" Type="Self.Houses" Multiplicity="1" />
+          <End Role="CharactersToHouse" Type="Self.CharactersToHouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Houses">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CharactersToHouse">
+              <PropertyRef Name="house_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BddGameOfThronesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Characters" EntityType="Self.Characters" />
+          <EntitySet Name="CharactersToHouse" EntityType="Self.CharactersToHouse" />
+          <EntitySet Name="Houses" EntityType="Self.Houses" />
+          <EntitySet Name="Relationships" EntityType="Self.Relationships" />
+          <AssociationSet Name="FK__Relations__first__66603565" Association="Self.FK__Relations__first__66603565">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Relationships" EntitySet="Relationships" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Relations__secon__6754599E" Association="Self.FK__Relations__secon__6754599E">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Relationships" EntitySet="Relationships" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Character__house__6383C8BA" Association="Self.FK__Character__house__6383C8BA">
+            <End Role="Houses" EntitySet="Houses" />
+            <End Role="CharactersToHouse" EntitySet="CharactersToHouse" />
+          </AssociationSet>
+          <EntitySet Name="Territories" EntityType="BddGameOfThronesModel.Territories" />
+          <AssociationSet Name="FK__Character__house__68487DD7" Association="BddGameOfThronesModel.FK__Character__house__68487DD7">
+            <End Role="Houses" EntitySet="Houses" />
+            <End Role="Characters" EntitySet="Characters" />
+          </AssociationSet>
+          <EntitySet Name="database_firewall_rules" EntityType="BddGameOfThronesModel.database_firewall_rules" />
+        </EntityContainer>
+        <EntityType Name="Territories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="territory_owner" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="territory_type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="territory_size" Type="Int32" Nullable="false" />
+          <Property Name="territory_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__Character__house__68487DD7">
+          <End Type="BddGameOfThronesModel.Houses" Role="Houses" Multiplicity="0..1" />
+          <End Type="BddGameOfThronesModel.Characters" Role="Characters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Houses">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Characters">
+              <PropertyRef Name="houseFK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="start_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="end_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BddGameOfThronesModelStoreContainer" CdmEntityContainer="BddGameOfThronesEntities">
+          <EntitySetMapping Name="Characters">
+            <EntityTypeMapping TypeName="BddGameOfThronesModel.Characters">
+              <MappingFragment StoreEntitySet="Characters">
+                <ScalarProperty Name="houseFK" ColumnName="houseFK" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="pv" ColumnName="pv" />
+                <ScalarProperty Name="bravoury" ColumnName="bravoury" />
+                <ScalarProperty Name="crazyness" ColumnName="crazyness" />
+                <ScalarProperty Name="strength" ColumnName="strength" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharactersToHouse">
+            <EntityTypeMapping TypeName="BddGameOfThronesModel.CharactersToHouse">
+              <MappingFragment StoreEntitySet="CharactersToHouse">
+                <ScalarProperty Name="house_id" ColumnName="house_id" />
+                <ScalarProperty Name="character" ColumnName="character" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Houses">
+            <EntityTypeMapping TypeName="BddGameOfThronesModel.Houses">
+              <MappingFragment StoreEntitySet="Houses">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="number_of_units" ColumnName="number_of_units" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Relationships">
+            <EntityTypeMapping TypeName="BddGameOfThronesModel.Relationships">
+              <MappingFragment StoreEntitySet="Relationships">
+                <ScalarProperty Name="first_character_id" ColumnName="first_character_id" />
+                <ScalarProperty Name="second_character_id" ColumnName="second_character_id" />
+                <ScalarProperty Name="relation_type" ColumnName="relation_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="database_firewall_rules">
+            <EntityTypeMapping TypeName="BddGameOfThronesModel.database_firewall_rules">
+              <MappingFragment StoreEntitySet="database_firewall_rules">
+                <ScalarProperty Name="modify_date" ColumnName="modify_date" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
+                <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
